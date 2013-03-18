@@ -36,7 +36,16 @@ function simple_twitter_page() {
 
 function simple_twitter_form_submit(&$form, &$form_state) {
   $name = $form_state['values']['name'];
-  $return = drupal_http_request('https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=' . $name);
+  $return = drupal_http_request('https://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $name);
+  
+  $list = json_decode($return->data);
+  foreach ($list as $tweet) {
+    
+  }
+  
+ 
+  theme('item_list', $output);
+  dpr($list);
   
   die();
 }

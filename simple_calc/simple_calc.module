@@ -68,8 +68,16 @@ function simple_calc_calculate($int1, $int2, $operator) {
     case 'add':
       return $int1 + $int2;
       break;
+    case 'subtract':
+      return $int1 - $int2;
+      break;
+    case 'divide':
+      return $int1 / $int2;
+      break;
+    case 'multiply':
+      return $int1 * $int2;
+      break;
   }
-
   return;
 }
 
