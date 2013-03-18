@@ -6,8 +6,8 @@ function simple_calc_menu() {
   $items['simple_calc'] = array(
     'title' => 'Simple calc',
     'description' => 'Simple calc test page',
-    'page callback' => 'simple_calc_page',
-    'access arguments' => array('use simple calc'),
+    'page callback' => '', // Missing
+    'access arguments' => array(), // Missing
   );
 
   return $items;
@@ -34,17 +34,13 @@ function simple_calc_form() {
     '#type' => 'select',
     '#options' => array(
       'add' => '+',
-      'subtract' => '-',
-      'divide' => '%',
-      'multiply' => '*',
+      // Missing, add other operators
       ),
   );
 
-  $form['int2'] = array(
-    '#type' => 'textfield',
-    '#title' => '',
-    '#default_value' => '',
-  );
+  
+  $form['int2'] = array();
+  // Missing.
 
   $form['calculate'] = array(
     '#type' => 'submit',
@@ -59,25 +55,12 @@ function simple_calc_page() {
 
 function simple_calc_form_submit(&$form, &$form_state) {
   $values = $form_state['values'];
-  $answer = simple_calc_calculate($values['int1'], $values['int2'], $values['operator']);
+  // Missing, generate the $answer variable
   drupal_set_message("The Answer is " + $answer);
 }
 
 function simple_calc_calculate($int1, $int2, $operator) {
-  switch ($operator) {
-    case 'add':
-      return $int1 + $int2;
-      break;
-    case 'subtract':
-      return $int1 - $int2;
-      break;
-    case 'divide':
-      return $int1 / $int2;
-      break;
-    case 'multiply':
-      return $int1 * $int2;
-      break;
-  }
-  return;
+  // Missing, build this function.
+  
 }
 

@@ -11,17 +11,19 @@ class SimpleCalcUnit extends DrupalUnitTestCase {
   }
 
   function setUp() {
-    $this->int1 = rand(-10,10);
-    $this->int2 = rand(-10,10);
+    $this->int1 = 10;
+    $this->int2 = 7;
     parent::setUp();
   }
   
-  function testAddition() {   
-    $this->assertEqual($this->int1 + $this->int2, simple_calc_calculate($this->int1, $this->int2,'add'), 'Addition computed successfully');
+  function testAddition() {
+    $answer = simple_calc_calculate($this->int1, $this->int2,'add');
+    
+    $this->assertEqual(); // Missing, fill in the assertion here.
   }
   
   function testSubstraction() {
-    $this->assertEqual($this->int1 - $this->int2, simple_calc_calculate($this->int1, $this->int2,'subtract'), 'Subtraction computed successfully');
+    // Missing
   }
 
 }
@@ -45,25 +47,15 @@ class SimpleCalcFunctional extends DrupalWebTestCase {
   
   function testAddition() {
     $this->drupalLogin($this->admin_user);
-    $edit = array(
-      'int1' => $this->int1,
-      'int2' => $this->int2,
-      'operator' => 'add',
-    );
+    $edit = array(); 
+    // Missing: Build this array to correspond to the fields on the simple_calc
+    // form
 
     $return = $this->drupalPost('simple_calc', $edit, t('Calculate'));
     $this->assertText('The Answer is ' . $this->int1 + $this->int2, 'Addition worked');
   }
   
   function testSubstraction() {
-    $this->drupalLogin($this->admin_user);
-    $edit = array(
-      'int1' => $this->int1,
-      'int2' => $this->int2,
-      'operator' => 'subtract',
-    );
-
-    $return = $this->drupalPost('simple_calc', $edit, t('Calculate'));
-    $this->assertText('The Answer is ' . $this->int1 - $this->int2);
+    // Missing.
   }
 }
