@@ -1,0 +1,3 @@
+name = Simple twitter
+description = Enter a twitter ID and show their last 10 tweets
+core = 7.x

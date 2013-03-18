@@ -1,0 +1,43 @@
+<?php
+
+function simple_twitter_menu() {
+  $items = array();
+
+  $items['simple_twitter'] = array(
+    'title' => 'Simple twitter',
+    'description' => 'Simple twitter test page',
+    'page callback' => 'simple_twitter_page',
+    'access arguments' => array('Use simple twitter'),
+  );
+
+  return $items;
+}
+
+function simple_twitter_form() {
+  $form = array();
+
+  $form['name'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Twitter Id',
+    '#default_value' => '',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Get my tweets',
+  );
+  return $form;
+}
+
+function simple_twitter_page() {
+  return drupal_get_form('simple_twitter_form');
+  
+}
+
+function simple_twitter_form_submit(&$form, &$form_state) {
+  $name = $form_state['values']['name'];
+  $return = drupal_http_request('https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=' . $name);
+  
+  die();
+}
+
