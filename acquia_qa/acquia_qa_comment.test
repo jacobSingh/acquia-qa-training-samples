@@ -1,14 +1,24 @@
 <?php
 
 class AcquiaQACommentTest extends DrupalWebTestCase {
+  
+  protected $admin_user;
+  protected $web_user;
+  protected $node;
 
-  function getInfo() {
-
+  public static function getInfo() {
+    return array(
+      'name' => 'Acquia QA Comment test',
+      'description' => 'Test creating a comment',
+      'group' => 'Acquia QA',
+    );
   }
 
   function setUp() {
-    // create the node
-    // create some users with different perms.
+    $this->admin_user = $this->drupalCreateUser(array('administer content types', 'administer comments', 'administer blocks'));
+    $this->web_user = $this->drupalCreateUser(array('access comments', 'post comments', 'create article content', 'edit own comments'));
+    $this->node = $this->drupalCreateNode(array('type' => 'article', 'promote' => 1, 'uid' => $this->web_user->uid));
+    parent::setUp('comment');
   }
 
   /**
@@ -20,42 +30,60 @@ class AcquiaQACommentTest extends DrupalWebTestCase {
    *   Comment body.
    * @param $subject
    *   Comment subject.
+   * 
+   * @return integer
+   *  Comment ID
    */
   function postComment($node, $comment, $subject = '') {
     $langcode = LANGUAGE_NONE;
     $edit = array();
     $edit['comment_body[' . $langcode . '][0][value]'] = $comment;
     $edit['subject'] = $subject;
+    $this->drupalGet('comment/reply/' . $node->nid);
     $this->drupalPost(NULL, $edit, t('Save'));
     
     $match = array();
     // Get comment ID
     preg_match('/#comment-([0-9]+)/', $this->getURL(), $match);
     if (isset($match[1])) {
-      return (object) array('id' => $match[1], 'subject' => $subject, 'comment' => $comment);
+      return $match[1];
     }
+  }
+  
+  function deleteComment($cid) {
+    
   }
 
   function testPostingComments() {
+    $this->drupalLogin($this->web_user);
     // Acquia writes this one.
-    $this->postComment();
-    // comment_load();
-    // assert it is there.
+    $subject = "Test comment subject";
+    $comment_text = "Test comment text";
+    $cid = $this->postComment($this->node, $comment_text, $subject);
+    $comment = comment_load($cid);
+    if (!$comment) {
+      $this->fail("Comment was not posted successfully, could not load");
+      return;
+    }
+    
+    $this->assertEqual($comment->subject, $subject, "Comment subject in DB matches");
+    $this->assertEqual($comment->comment, $comment_text, "Comment text in DB matches");
   }
 
-  function testDeletingComment() {
-    $this->postComment();
-    // comment_load();
-    // assert it is there.
-    $this->deleteComment();
-    // assert it ain't there.
-    // comment_load() == false;
-  }
-
-  // Challenge:
-  function testCommentPermissions() {
-    // run the above posting method using different users.
-  }
+//  function testDeletingComment() {
+//    
+//    //$this->postComment();
+//    // comment_load();
+//    // assert it is there.
+//    //$this->deleteComment();
+//    // assert it ain't there.
+//    // comment_load() == false;
+//  }
+//
+//  // Challenge:
+//  function testCommentPermissions() {
+//    // run the above posting method using different users.
+//  }
 
 }
   
