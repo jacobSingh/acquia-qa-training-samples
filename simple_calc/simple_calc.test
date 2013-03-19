@@ -32,9 +32,7 @@ class SimpleCalcFunctional extends DrupalWebTestCase {
 
   public static function getInfo() {
     return array(
-      'name' => 'Simple Calculator Functional test',
-      'description' => 'Simplecalc calculation testing form submission',
-      'group' => 'SimpleCalc',
+      // Missing, fill this in to get it to show up.
     );
   }
   

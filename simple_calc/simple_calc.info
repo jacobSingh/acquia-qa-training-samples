@@ -2,4 +2,4 @@ name = Simple Calc
 description = Calculator
 core = 7.x
 files[] = simple_calc.module
-files[] = simple_calc.test
+;files[] = simple_calc.test
