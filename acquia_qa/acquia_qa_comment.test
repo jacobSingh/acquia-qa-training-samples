@@ -15,10 +15,11 @@ class AcquiaQACommentTest extends DrupalWebTestCase {
   }
 
   function setUp() {
+    parent::setUp('comment');
     $this->admin_user = $this->drupalCreateUser(array('administer content types', 'administer comments', 'administer blocks'));
     $this->web_user = $this->drupalCreateUser(array('access comments', 'post comments', 'create article content', 'edit own comments'));
     $this->node = $this->drupalCreateNode(array('type' => 'article', 'promote' => 1, 'uid' => $this->web_user->uid));
-    parent::setUp('comment');
+    
   }
 
   /**
@@ -50,8 +51,15 @@ class AcquiaQACommentTest extends DrupalWebTestCase {
     }
   }
   
-  function deleteComment($cid) {
-    
+  /**
+   * Delete comment.
+   *
+   * @param object $comment
+   *   Comment to delete.
+   */
+  function deleteComment($comment) {
+    $this->drupalPost('comment/' . $comment->id . '/delete', array(), t('Delete'));
+    $this->assertText(t('The comment and all its replies have been deleted.'), 'Comment deleted.');
   }
 
   function testPostingComments() {
@@ -67,23 +75,25 @@ class AcquiaQACommentTest extends DrupalWebTestCase {
     }
     
     $this->assertEqual($comment->subject, $subject, "Comment subject in DB matches");
-    $this->assertEqual($comment->comment, $comment_text, "Comment text in DB matches");
+    $this->assertEqual($comment->comment_body['und'][0]['value'], $comment_text, "Comment text in DB matches");
   }
 
-//  function testDeletingComment() {
-//    
-//    //$this->postComment();
-//    // comment_load();
-//    // assert it is there.
-//    //$this->deleteComment();
-//    // assert it ain't there.
-//    // comment_load() == false;
-//  }
-//
-//  // Challenge:
-//  function testCommentPermissions() {
-//    // run the above posting method using different users.
-//  }
+  function testDeletingComment() {
+    // Login as the admin user.
+     
+    //$this->postComment();
+    
+    // use comment_load() to assert the comment was added (see above).
+    
+    //$this->deleteComment();
+    
+    // use comment_load() to assert the comment is no longer there.
+  }
+
+  // Challenge:
+  function testCommentPermissions() {
+    // run the above posting method using different users.
+  }
 
 }
   
